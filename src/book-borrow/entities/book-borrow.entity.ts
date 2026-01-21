@@ -37,6 +37,9 @@ export class BookBorrow {
     @Column({ nullable: true })
     notes?: string;
 
+    @ManyToOne(() => User, { eager: true })
+    createdBy: User;
+
     @CreateDateColumn()
     createdAt: Date;
 

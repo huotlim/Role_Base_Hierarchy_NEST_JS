@@ -49,7 +49,7 @@ export class BookBorrowService {
 
   // }
 
-  async create(createBookBorrowDto: CreateBookBorrowDto) {
+  async create(createBookBorrowDto: CreateBookBorrowDto , creator: any) {
   const book = await this.bookRepository.findOne({
     where: { id: createBookBorrowDto.bookId },
   });
@@ -89,6 +89,7 @@ export class BookBorrowService {
   const borrow = this.borrowRepository.create({
     book,
     user,
+    createdBy: creator,
     borrowDate: new Date(),
     dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     status: BorrowStatus.ACTIVE,
@@ -133,5 +134,12 @@ export class BookBorrowService {
     return this.borrowRepository.delete(id);
   }
 
-  
+  async findAllByCreator(creator: any) {
+    return await this.borrowRepository.find({
+      where: { createdBy: { id: creator.id } },
+      relations: ['book', 'user' , 'createdBy'],
+    });
+   
+  }
+
 }
