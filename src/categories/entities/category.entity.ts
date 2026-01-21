@@ -1,5 +1,6 @@
 import { Book } from "src/book/entities/book.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from "src/users/entity/user.entity";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Category {
@@ -9,9 +10,12 @@ export class Category {
 
     @Column()
     name: string;
-
+    
     @Column({ nullable: true })
     description?: string;
+    //Created by user relation
+    @ManyToOne(() => User, { eager: true })
+    createdBy: User;
 
     @CreateDateColumn()
     createdAt: Date;

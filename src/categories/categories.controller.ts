@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -13,8 +13,9 @@ export class CategoriesController {
   @Permissions('CREATE_CATEGORY')
   @UseGuards(AuthGuard('jwt'), PermissionsGuard)
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
+  create(@Body() createCategoryDto: CreateCategoryDto ,  @Req() req: any) {
+    const user = req.user;
+    return this.categoriesService.create(createCategoryDto , user);
   }
 
   @Permissions('VIEW_CATEGORIES')
@@ -22,6 +23,14 @@ export class CategoriesController {
   @Get()
   findAll() {
     return this.categoriesService.findAll();
+  }
+
+  @Permissions()
+  @UseGuards(AuthGuard('jwt'), PermissionsGuard)
+  @Get('by-creator')
+  findAllByCreator(@Req() req: any) {
+    const creator = req.user;
+    return this.categoriesService.findAllByCreator(creator);
   }
 
   @Permissions('VIEW_CATEGORIES_BY_ID')

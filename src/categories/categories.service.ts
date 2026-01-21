@@ -13,13 +13,20 @@ export class CategoriesService {
     private categoryRepo: Repository<Category>,
   ) {}
   
-  async create(Dto: CreateCategoryDto) {
-    const category = this.categoryRepo.create({ name: Dto.name, description: Dto.description });
+  async create(Dto: CreateCategoryDto ,user:any) {
+    const category = this.categoryRepo.create({ name: Dto.name, description: Dto.description , createdBy: user });
     return this.categoryRepo.save(category);
   }
 
    async findAll() {
     return await this.categoryRepo.find();
+  }
+
+  async findAllByCreator(creator: any) {
+    return await this.categoryRepo.find({
+      where: { createdBy: { id: creator.id } },
+      relations: ['books', 'createdBy'],
+    })
   }
 
   async findOne(id: number) {
