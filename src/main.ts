@@ -7,7 +7,7 @@ async function bootstrap() {
   
   // Enable CORS
   app.enableCors({
-    origin: ['http://localhost:3001', 'http://localhost:3000'], // Allow frontend and backend origins
+    origin: ['http://localhost:3001', 'http://localhost:3000', 'https://plp-admin-iota.vercel.app'], // Allow frontend and backend origins
     credentials: true, // Allow cookies and credentials
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
