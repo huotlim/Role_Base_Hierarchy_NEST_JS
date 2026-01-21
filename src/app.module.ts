@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RolesModule } from './roles/roles.module';
+import { CategoriesModule } from './categories/categories.module';
+import { BookModule } from './book/book.module';
+import { BookBorrowModule } from './book-borrow/book-borrow.module';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { RolesModule } from './roles/roles.module';
     AuthModule,
     UsersModule,
     RolesModule,
+    CategoriesModule,
+    BookModule,
+    BookBorrowModule,
     // UsersModule,
 
 
