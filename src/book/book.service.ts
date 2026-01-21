@@ -17,7 +17,7 @@ export class BookService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createBookDto: CreateBookDto) {
+  async create(createBookDto: CreateBookDto , user: any) {
     const category = await this.categoryRepository.findOne({ where: { id: createBookDto.categoryId } });
     if (!category) {
       throw new NotFoundException('Category not found');
@@ -31,6 +31,8 @@ export class BookService {
       availableQuantity: createBookDto.availableQuantity,
        // Default to totalCopies if not provided
       category: category,
+      createdBy: user,
+
       
     });
     
@@ -38,8 +40,11 @@ export class BookService {
    
   }
 
-  async findAll() {
-    const books = await this.bookRepository.find({ relations: ['category'] });
+  async findAll(user: any) {
+    const books = await this.bookRepository.find({ 
+      where: { createdBy: {id:user.id} }
+      ,
+      relations: ['category' , 'createdBy'] });
     return books;
    
   }

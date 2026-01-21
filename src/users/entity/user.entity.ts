@@ -1,5 +1,6 @@
+import { Book } from "src/book/entities/book.entity";
 import { Role } from "src/roles/entity/role.entity";
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -17,4 +18,7 @@ export class User {
 
     @ManyToOne(() => Role, role => role.users)
     role: Role;
+
+    @OneToMany(() => Book, book => book.createdBy)
+    books: Book[];
 }

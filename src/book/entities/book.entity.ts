@@ -1,5 +1,6 @@
 import { BookBorrow } from "src/book-borrow/entities/book-borrow.entity";
 import { Category } from "src/categories/entities/category.entity";
+import { User } from "src/users/entity/user.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
@@ -36,6 +37,9 @@ export class Book {
 
     @OneToMany(() => BookBorrow, borrow => borrow.book)
     borrows: BookBorrow[];
+
+    @ManyToOne(() => User, user => user.books, { eager: true })
+    createdBy: User;
 
     @CreateDateColumn()
     createdAt: Date;
