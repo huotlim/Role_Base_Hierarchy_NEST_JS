@@ -5,13 +5,26 @@ import { AssignPermissionsDto } from './dto/assign-permissions.dto';
 import { PermissionsGuard } from 'src/rbac/guards/permissions.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { Permissions } from 'src/rbac/decorators/permissions.decorator';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiOperation,
+  ApiParam,
+  ApiBody,
+  ApiResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('Roles')
+@ApiBearerAuth('access-token')
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Permissions('CREATE_ROLE')
   @UseGuards(AuthGuard('jwt'), PermissionsGuard)
+  @ApiOperation({ summary: 'Create new role' })
+  @ApiBody({ type: RoleDto })
+  @ApiResponse({ status: 201, description: 'Role created' })
   @Post()
   CreateRole(@Body() dto: RoleDto, @Request() req) {
     return this.rolesService.createRole(dto, req.user);
@@ -40,6 +53,8 @@ export class RolesController {
     return this.rolesService.getAllRoles(req.user);
   }
 
+  @ApiOperation({ summary: 'Get all roles' })
+  @ApiResponse({ status: 200 })
   @Permissions('VIEW_ROLE')
   @UseGuards(AuthGuard('jwt'), PermissionsGuard)
   @Get(':id')
